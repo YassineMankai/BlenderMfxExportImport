@@ -1,0 +1,601 @@
+{
+    "name": "test1",
+    "inputs": [
+        {
+            "sourceType": "geometry",
+            "name": "Geometry",
+            "attributes": [
+                {
+                    "name": "AAA",
+                    "type": "BOOLEAN",
+                    "default_value": false
+                }
+            ]
+        },
+        {
+            "sourceType": "object",
+            "name": "Object",
+            "attributes": []
+        },
+        {
+            "sourceType": "object",
+            "name": "Object",
+            "attributes": []
+        }
+    ],
+    "parameters": {
+        "Seed": {
+            "type": "VALUE",
+            "default_value": 2.0
+        }
+    },
+    "nodes": {
+        "OutputNode": {
+            "type": "output",
+            "inputs": {
+                "Geometry": {
+                    "sourceNodeName": "Join Geometry.001",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                }
+            },
+            "settings": {},
+            "constants": {}
+        },
+        "InputNode": {
+            "type": "input",
+            "inputs": {},
+            "settings": {},
+            "constants": {}
+        },
+        "Join Geometry": {
+            "type": "join",
+            "inputs": {
+                "Geometry (0)": {
+                    "sourceNodeName": "Set Position.002",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                },
+                "Geometry (1)": {
+                    "sourceNodeName": "Set Position",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                }
+            },
+            "settings": {
+                "nbInputs": 2
+            },
+            "constants": {}
+        },
+        "Set Position": {
+            "type": "blender",
+            "inputs": {
+                "Geometry": {
+                    "sourceNodeName": "Instance on Points",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Instances (0)"
+                    }
+                },
+                "attributeExtraGeometry_2": {
+                    "sourceNodeName": "Vector Math.001_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Position (2)": "Vector (0)"
+                    }
+                },
+                "attributeExtraGeometry_3": {
+                    "sourceNodeName": "Vector Math.002_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Offset (3)": "Vector (0)"
+                    }
+                }
+            },
+            "settings": {
+                "geo_node": "GeometryNodeSetPosition"
+            },
+            "constants": {}
+        },
+        "Set Position.002": {
+            "type": "blender",
+            "inputs": {
+                "Geometry": {
+                    "sourceNodeName": "Cone",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Mesh (0)"
+                    }
+                },
+                "attributeExtraGeometry_2": {
+                    "sourceNodeName": "Vector Math.001_cpy.001",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Position (2)": "Vector (0)"
+                    }
+                }
+            },
+            "settings": {
+                "geo_node": "GeometryNodeSetPosition"
+            },
+            "constants": {}
+        },
+        "Cone": {
+            "type": "mesh_primitive",
+            "inputs": {},
+            "settings": {
+                "fill_type": "NGON",
+                "shape": "cone"
+            },
+            "constants": {
+                "Vertices (0)": {
+                    "type": "value",
+                    "data": 32
+                },
+                "Side Segments (1)": {
+                    "type": "value",
+                    "data": 1
+                },
+                "Fill Segments (2)": {
+                    "type": "value",
+                    "data": 1
+                },
+                "Radius Bottom (4)": {
+                    "type": "value",
+                    "data": 1.0
+                },
+                "Depth (5)": {
+                    "type": "value",
+                    "data": 2.0
+                }
+            }
+        },
+        "Set Position.003": {
+            "type": "blender",
+            "inputs": {
+                "Geometry": {
+                    "sourceNodeName": "Join Geometry",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                },
+                "attributeExtraGeometry_2": {
+                    "sourceNodeName": "Vector Math.004_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Position (2)": "Vector (0)"
+                    }
+                }
+            },
+            "settings": {
+                "geo_node": "GeometryNodeSetPosition"
+            },
+            "constants": {}
+        },
+        "Distribute Points on Faces": {
+            "type": "blender",
+            "inputs": {
+                "Mesh": {
+                    "sourceNodeName": "InputNode",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Mesh (0)": "Geometry (0)",
+                        "Selection (1)": "AAA (1)"
+                    }
+                }
+            },
+            "settings": {
+                "distribute_method": "RANDOM",
+                "geo_node": "GeometryNodeDistributePointsOnFaces"
+            },
+            "constants": {
+                "Density Max (3)": {
+                    "type": "value",
+                    "data": 10.0
+                },
+                "Density (4)": {
+                    "type": "value",
+                    "data": 1.5
+                },
+                "Density Factor (5)": {
+                    "type": "value",
+                    "data": 1.0
+                },
+                "Seed (6)": {
+                    "type": "parameter",
+                    "data": "Seed"
+                }
+            }
+        },
+        "Instance on Points": {
+            "type": "blender",
+            "inputs": {
+                "Points": {
+                    "sourceNodeName": "Distribute Points on Faces",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Points (0)": "Points (0)",
+                        "Rotation (5)": "position (3)"
+                    }
+                },
+                "Instance": {
+                    "sourceNodeName": "Cube",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Instance (2)": "Mesh (0)"
+                    }
+                }
+            },
+            "settings": {
+                "geo_node": "GeometryNodeInstanceOnPoints"
+            },
+            "constants": {
+                "Pick Instance (3)": {
+                    "type": "value",
+                    "data": false
+                },
+                "Scale (6)": {
+                    "type": "value",
+                    "data": [
+                        0.30000001192092896,
+                        0.30000001192092896,
+                        0.30000001192092896
+                    ]
+                }
+            }
+        },
+        "Cube": {
+            "type": "mesh_primitive",
+            "inputs": {},
+            "settings": {
+                "shape": "cube"
+            },
+            "constants": {
+                "Size (0)": {
+                    "type": "value",
+                    "data": [
+                        1.0,
+                        2.0,
+                        1.0
+                    ]
+                },
+                "Vertices X (1)": {
+                    "type": "value",
+                    "data": 2
+                },
+                "Vertices Y (2)": {
+                    "type": "value",
+                    "data": 2
+                },
+                "Vertices Z (3)": {
+                    "type": "value",
+                    "data": 2
+                }
+            }
+        },
+        "Set Position.001": {
+            "type": "blender",
+            "inputs": {
+                "Geometry": {
+                    "sourceNodeName": "Join Geometry",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)",
+                        "Position (2)": "position (1)"
+                    }
+                },
+                "attributeExtraGeometry_3": {
+                    "sourceNodeName": "Vector Math.004_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Offset (3)": "Vector (0)"
+                    }
+                }
+            },
+            "settings": {
+                "geo_node": "GeometryNodeSetPosition"
+            },
+            "constants": {}
+        },
+        "Object Info": {
+            "type": "input_object",
+            "inputs": {},
+            "settings": {
+                "transform_space": "ORIGINAL",
+                "objectID": 2
+            },
+            "constants": {
+                "As Instance (1)": {
+                    "type": "value",
+                    "data": false
+                }
+            }
+        },
+        "Object Info.001": {
+            "type": "input_object",
+            "inputs": {},
+            "settings": {
+                "transform_space": "ORIGINAL",
+                "objectID": 3
+            },
+            "constants": {
+                "As Instance (1)": {
+                    "type": "value",
+                    "data": false
+                }
+            }
+        },
+        "Join Geometry.001": {
+            "type": "join",
+            "inputs": {
+                "Geometry (0)": {
+                    "sourceNodeName": "Set Position.001",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                },
+                "Geometry (1)": {
+                    "sourceNodeName": "Set Position.003",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Geometry (0)": "Geometry (0)"
+                    }
+                },
+                "Geometry (2)": {
+                    "sourceNodeName": "Object Info",
+                    "socketIndex": 3,
+                    "connections": {
+                        "Geometry (0)": "Geometry (3)"
+                    }
+                },
+                "Geometry (3)": {
+                    "sourceNodeName": "Object Info.001",
+                    "socketIndex": 3,
+                    "connections": {
+                        "Geometry (0)": "Geometry (3)"
+                    }
+                }
+            },
+            "settings": {
+                "nbInputs": 4
+            },
+            "constants": {}
+        },
+        "Noise Texture_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Instance on Points",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "position (1)"
+                    }
+                }
+            },
+            "settings": {
+                "noise_dimensions": "3D",
+                "operation": {
+                    "operation": "texture",
+                    "info": "noise"
+                }
+            },
+            "constants": {
+                "Scale (2)": {
+                    "type": "value",
+                    "data": 0.20000028610229492
+                },
+                "Detail (3)": {
+                    "type": "value",
+                    "data": 15.0
+                },
+                "Roughness (4)": {
+                    "type": "value",
+                    "data": 0.3583333194255829
+                },
+                "Distortion (5)": {
+                    "type": "value",
+                    "data": -1.9999998807907104
+                }
+            }
+        },
+        "Vector Math.002_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Vector Math.001_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "Vector (0)"
+                    }
+                },
+                "attributeExtraGeometry_1": {
+                    "sourceNodeName": "Noise Texture_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (1)": "Fac (0)"
+                    }
+                }
+            },
+            "settings": {
+                "operation": {
+                    "operation": "add",
+                    "info": "vector"
+                }
+            },
+            "constants": {}
+        },
+        "Vector Math.001_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Instance on Points",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "position (1)"
+                    }
+                },
+                "attributeExtraGeometry_1": {
+                    "sourceNodeName": "Noise Texture_cpy",
+                    "socketIndex": 1,
+                    "connections": {
+                        "Vector (1)": "Color (1)"
+                    }
+                }
+            },
+            "settings": {
+                "operation": {
+                    "operation": "project",
+                    "info": "vector"
+                }
+            },
+            "constants": {}
+        },
+        "Noise Texture_cpy.001": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Cone",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "position (4)"
+                    }
+                }
+            },
+            "settings": {
+                "noise_dimensions": "3D",
+                "operation": {
+                    "operation": "texture",
+                    "info": "noise"
+                }
+            },
+            "constants": {
+                "Scale (2)": {
+                    "type": "value",
+                    "data": 0.20000028610229492
+                },
+                "Detail (3)": {
+                    "type": "value",
+                    "data": 15.0
+                },
+                "Roughness (4)": {
+                    "type": "value",
+                    "data": 0.3583333194255829
+                },
+                "Distortion (5)": {
+                    "type": "value",
+                    "data": -1.9999998807907104
+                }
+            }
+        },
+        "Vector Math.001_cpy.001": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Cone",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "position (4)"
+                    }
+                },
+                "attributeExtraGeometry_1": {
+                    "sourceNodeName": "Noise Texture_cpy.001",
+                    "socketIndex": 1,
+                    "connections": {
+                        "Vector (1)": "Color (1)"
+                    }
+                }
+            },
+            "settings": {
+                "operation": {
+                    "operation": "project",
+                    "info": "vector"
+                }
+            },
+            "constants": {}
+        },
+        "Noise Texture.001_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Join Geometry",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "position (1)"
+                    }
+                }
+            },
+            "settings": {
+                "noise_dimensions": "3D",
+                "operation": {
+                    "operation": "texture",
+                    "info": "noise"
+                }
+            },
+            "constants": {}
+        },
+        "Vector Math.003_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Noise Texture.001_cpy",
+                    "socketIndex": 1,
+                    "connections": {
+                        "Vector (0)": "Color (1)"
+                    }
+                }
+            },
+            "settings": {
+                "operation": {
+                    "operation": "subtract",
+                    "info": "vector"
+                }
+            },
+            "constants": {
+                "Vector (1)": {
+                    "type": "value",
+                    "data": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                }
+            }
+        },
+        "Vector Math.004_cpy": {
+            "type": "math",
+            "inputs": {
+                "attributeExtraGeometry_0": {
+                    "sourceNodeName": "Vector Math.003_cpy",
+                    "socketIndex": 0,
+                    "connections": {
+                        "Vector (0)": "Vector (0)"
+                    }
+                }
+            },
+            "settings": {
+                "operation": {
+                    "operation": "multiply",
+                    "info": "vector"
+                }
+            },
+            "constants": {
+                "Vector (1)": {
+                    "type": "value",
+                    "data": [
+                        4.0,
+                        4.0,
+                        4.0
+                    ]
+                }
+            }
+        }
+    }
+}
