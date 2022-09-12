@@ -34,12 +34,16 @@ def exploreFieldExtent(node, visitedNodes, duplicateList, toDelete, geometryToIn
     visitedNodes.pop(node.name)
 
 def handleFieldInputs(node, geometryToConnect, duplicateList):
-    if isDataFlowNode(node) and len(node.inputs) > 0 and node.inputs[0].type == 'GEOMETRY':
-        sourceNodeName = node.inputs[0].links[0].from_node.name
-        sourceSocketIndex = node.inputs[0].links[0].from_socket.path_from_id()[:-1].split("[")[-1]
-        geometryToConnect = (sourceNodeName, sourceSocketIndex)
-
+    nodeGenenrateGeometry = len([inp for inp in node.inputs if inp.type == 'GEOMETRY']) == 0
     for input in node.inputs:
+        if len(input.links) == 0:
+            continue
+        if isDataFlowNode(node) and not nodeGenenrateGeometry:
+            targetGeometrySocket = node.inputs[getSourceInputIndex(input)]
+            sourceNodeName = targetGeometrySocket.links[0].from_node.name
+            sourceSocketIndex = targetGeometrySocket.links[0].from_socket.path_from_id()[:-1].split("[")[-1]
+            geometryToConnect = (sourceNodeName, sourceSocketIndex)
+        
         for link in input.links:
             handleFieldInputs(link.from_node, geometryToConnect, duplicateList)
             sourceNode_cpy = link.from_node
@@ -61,6 +65,8 @@ def generateMultiplexerFromNode(node, inputFields):
     nodes = node_group.nodes
     wrapperGroup = bpy.data.node_groups.new(type='GeometryNodeTree', name='multiplexer_' + node.name)
 
+    inputFieldOutputIndex = 0
+
     nodeGroupInput = wrapperGroup.nodes.new('NodeGroupInput')
     nodeGroupOutput = wrapperGroup.nodes.new('NodeGroupOutput')
     for outputIndex in range(len(node.outputs)):
@@ -73,8 +79,12 @@ def generateMultiplexerFromNode(node, inputFields):
     for inputFieldName in inputFields.keys():
         inputField = inputFields[inputFieldName]
         inputField_cpy = duplicate_node(inputField, wrapperGroup)
-        wrapperGroup.outputs.new(type=inputField_cpy.outputs[0].bl_idname, name=inputFieldName)
-        wrapperGroup.links.new(inputField_cpy.outputs[0], nodeGroupOutput.inputs[-2])   
+        type = inputField_cpy.outputs[0].bl_idname
+        if inputField_cpy.bl_idname == 'GeometryNodeInputNamedAttribute':
+            inputFieldOutputIndex = ['FLOAT_VECTOR', 'FLOAT', 'FLOAT_COLOR', 'BOOLEAN', 'INT'].index(inputField_cpy.data_type)
+            type = 'NodeSocket' + ['Vector', 'Float', 'Color', 'Bool', 'Int'][inputFieldOutputIndex]
+        wrapperGroup.outputs.new(type=type, name=inputFieldName)
+        wrapperGroup.links.new(inputField_cpy.outputs[inputFieldOutputIndex], nodeGroupOutput.inputs[-2])   
     autoAlignNodes(nodeGroupOutput)
     multiplexerNode = node_group.nodes.new('GeometryNodeGroup')
     multiplexerNode.node_tree = wrapperGroup
@@ -93,7 +103,7 @@ def generateMultiplexerFromNode(node, inputFields):
             
     for inputFieldName in inputFields.keys():
         inputField = inputFields[inputFieldName]
-        for link in inputField.outputs[0].links:
+        for link in inputField.outputs[inputFieldOutputIndex].links:
             node_group.links.new(multiplexerNode.outputs[inputFieldName], link.to_socket)
         if nodes.get(inputField.name):
             nodes.remove(inputField)    

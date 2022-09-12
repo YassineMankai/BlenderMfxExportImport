@@ -1,9 +1,9 @@
 graphName = 'test1'
-path = ''
+path = 'C:/Users/yassi/Desktop/Projects/OpenMFX/BlenderMfxExportImport/'
 graph = D.node_groups[graphName]
 import sys, os
-os.chdir('C:/Users/yassi/Desktop/Projects/OpenMFX/BlenderMfxExportImport/')
-sys.path.append('C:/Users/yassi/Desktop/Projects/OpenMFX/BlenderMfxExportImport/')
+os.chdir(path)
+sys.path.append(path)
 
 from  geometryNodeToJSON import *
 exportToJSON(graph)

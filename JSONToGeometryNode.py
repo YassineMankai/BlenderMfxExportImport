@@ -104,16 +104,18 @@ def importFromJSON(graphName = 'test1'):
                 if sourceNodeName == 'InputNode':
                     sourceNodeOutputCount -= 1
                 
+                targetSocket = geomNodesGraph['OutputNode'].inputs[-1] if nodeData['type'] == 'output' else geomNodesGraph[nodeName].inputs[getSocketIndexFromComposedKey(connection[0])]
                 sourceSocket = None
                 if sourceSocketIndex >= sourceNodeOutputCount: # is multiplexed attribute -> need inputNode
                     multiplexerKey = (sourceNodeName, sourceSocketIndex) 
                     if not inputNodesForMultiplexers.get(multiplexerKey):
                         attributeData = {'attributeName' : getSocketNameFromComposedKey(connection[1]), 'type': targetSocket.type}
                         inputNodesForMultiplexers[multiplexerKey] = addNewInputNode(nodes, attributeData)
-                    sourceSocket = inputNodesForMultiplexers[multiplexerKey].outputs[0]
+                    inputFieldOutputIndex = 0 if inputNodesForMultiplexers[multiplexerKey].type != 'INPUT_ATTRIBUTE' else ['FLOAT_VECTOR', 'FLOAT', 'FLOAT_COLOR', 'BOOLEAN', 'INT'].index(inputNodesForMultiplexers[multiplexerKey].data_type)
+                    sourceSocket = inputNodesForMultiplexers[multiplexerKey].outputs[inputFieldOutputIndex]
                 else:
                     sourceSocket = geomNodesGraph[input['sourceNodeName']].outputs[sourceSocketIndex] 
-                targetSocket = geomNodesGraph['OutputNode'].inputs[-1] if nodeData['type'] == 'output' else geomNodesGraph[nodeName].inputs[getSocketIndexFromComposedKey(connection[0])]
+                
                 link(sourceSocket, targetSocket)
             
 
