@@ -25,22 +25,19 @@ def exportNodes(nodes, dictionary):
                 print(nodeData)
                 print(CustomMessage(node.type))
                 return -1
-        '''
-
-            isMultiplexer = node.label == 'multiplexer'
-            
-            if isMultiplexer:
+        '''            
+            if node.label == 'multiplexer':
                 continue
 
             isOperation = isAttributeOperationNode(node)
-            nodeList[node.name]= {'type': '', 'inputs': {}, 'settings': {}, 'constants':{}} 
+            nodeList.append({'name': node.name, 'type': '', 'inputs': {}, 'settings': [], 'constants':[]}) 
             
             # export properties
             for prop in node.bl_rna.properties:
                 prop_id = prop.identifier
                 if prop_id in node.bl_rna.base.properties or prop.is_readonly or propertyIsHandled(node, prop):
                     continue
-                nodeList[node.name]['settings'][prop_id] = getattr(node, prop_id)
+                nodeList[-1]['settings'].append({'property' : prop_id, 'value' : getattr(node, prop_id)})
             
             # export attributes set to default
             for inputIndex in range(len(node.inputs)):
@@ -48,33 +45,33 @@ def exportNodes(nodes, dictionary):
                 if not input.is_linked:
                     def_val = getDefaultValue(input)      
                     if not isDefault(input, def_val):
-                        nodeList[node.name]['constants'][input.name + ' (' + str(inputIndex) + ')'] = {'type' : 'value', 'data' : def_val}
+                        nodeList[-1]['constants'].append({'socket' : input.name + ' (' + str(inputIndex) + ')', 'type' : 'value', 'data' : def_val})
             
             # set node type and settings
             if node.type == 'GROUP':
                 exportToJSON(node.node_tree)
-                nodeList[node.name]['type'] = 'group'
-                nodeList[node.name]['settings']["graph"] = node.node_tree.name
+                nodeList[-1]['type'] = 'group'
+                nodeList[-1]['settings'].append({'property' : "graph", 'value' : node.node_tree.name})
             elif node.type == 'OPEN_MFX':
-                nodeList[node.name]['type'] = 'openmfx'
-                nodeList[node.name]['settings']["plugin"] = getPluginName(node)
-                nodeList[node.name]['settings']["effect"] = node.effect_enum
+                nodeList[-1]['type'] = 'openmfx'
+                nodeList[-1]['settings'].append({'property' : "plugin", 'value' : getPluginName(node)})
+                nodeList[-1]['settings'].append({'property' : "effect", 'value' : node.effect_enum})
             elif node.type.startswith('MESH_PRIMITIVE'):
-                nodeList[node.name]['type'] = 'mesh_primitive'
-                nodeList[node.name]['settings']["shape"] = node.type.split('_')[-1].lower()
+                nodeList[-1]['type'] = 'mesh_primitive'
+                nodeList[-1]['settings'].append({'property': "shape", 'value' : node.type.split('_')[-1].lower()})
             elif node.type == 'OBJECT_INFO':
-                nodeList[node.name]['type'] = 'input_object'
+                nodeList[-1]['type'] = 'input_object'
             elif node.type == 'STORE_NAMED_ATTRIBUTE':
-                nodeList[node.name]['type'] = 'save_named_attribute'
+                nodeList[-1]['type'] = 'save_named_attribute'
             elif node.type == 'JOIN_GEOMETRY':
-                nodeList[node.name]['type'] = 'join'
-                nodeList[node.name]['settings']["nbInputs"] = len(node.inputs[0].links)
+                nodeList[-1]['type'] = 'join'
+                nodeList[-1]['settings'].append({'property' : "nbInputs" , 'value' : len(node.inputs[0].links)})
             elif isOperation:
-                nodeList[node.name]['type'] = 'math'
-                nodeList[node.name]['settings']["operation"] = getOperationInfo(node)
+                nodeList[-1]['type'] = 'math'
+                nodeList[-1]['settings'].append({'property' : "operation", 'value' : getOperationInfo(node)})
             else: # normal blender effect node
-                nodeList[node.name]['type'] = 'blender'
-                nodeList[node.name]['settings']["geo_node"] = node.bl_idname
+                nodeList[-1]['type'] = 'blender'
+                nodeList[-1]['settings'].append({'property' : "geo_node", 'value' : node.bl_idname})
     return 1
 
 def getSourceIndex(sourceSocket, inputMap):
@@ -96,11 +93,11 @@ def getSourceData(sourceSocket, inputMap):
             return getSourceData(realLink.from_socket, inputMap)
     
     elif sourceSocket.type == 'GEOMETRY':
-        return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': sourceSocketIndex, 'connections' : {}}
+        return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': sourceSocketIndex, 'connections' : []}
 
     elif sourceSocket.display_shape == 'DIAMOND':
         if isAttributeOperationNode(sourceSocket.node):
-            return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': sourceSocketIndex, 'connections' : {}}
+            return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': sourceSocketIndex, 'connections' : []}
         else:
             while sourceSocket.node.outputs[sourceSocketIndex].type != 'GEOMETRY':
                 sourceSocketIndex -= 1
@@ -115,22 +112,22 @@ def addConnection(inputData, link, inputMap):
     sourceKey = sourceSocket.name + ' (' + str(sourceSocketIndex) + ')'
     targetKey = targetSocket.name + ' (' + targetSocketIndex + ')'
     
-    currentSoruceData = getSourceData(sourceSocket, inputMap)
+    currentSourceData = getSourceData(sourceSocket, inputMap)
 
     for key in list(inputData.keys()):
-        if inputData[key]['sourceNodeName'] == currentSoruceData['sourceNodeName'] and inputData[key]['socketIndex'] == currentSoruceData['socketIndex']:
-            inputData[key]['connections'][targetKey] = sourceKey
+        if inputData[key]['sourceNodeName'] == currentSourceData['sourceNodeName'] and inputData[key]['socketIndex'] == currentSourceData['socketIndex']:
+            inputData[key]['connections'].append({'from' : targetKey, 'to' : sourceKey})
             return
-    inputData['attributeExtraGeometry_' + targetSocketIndex] = currentSoruceData
-    inputData['attributeExtraGeometry_' + targetSocketIndex]['connections'][targetKey]  = sourceKey
+    inputData['attributeExtraGeometry_' + targetSocketIndex] = currentSourceData
+    inputData['attributeExtraGeometry_' + targetSocketIndex]['connections'].append({'from' : targetKey, 'to' : sourceKey})
 
 def exportLinks(nodes, dictionary, inputMap):
     nodeList = dictionary['nodes']
 
-    for node in nodes:
+    for nodeData in nodeList:
+        node = nodes[nodeData['name']]
         if node.label == 'multiplexer' or node.type == 'GROUP_INPUT':
             continue
-        nodeData = nodeList[node.name]
         if node.type == 'INSTANCE_ON_POINTS':
             if node.inputs['Points'].is_linked:
                 link = node.inputs['Points'].links[0]
@@ -165,9 +162,9 @@ def exportLinks(nodes, dictionary, inputMap):
                     nodeData['inputs'][input.name] = getSourceData(link.from_socket, inputMap)
                     addConnection(nodeData['inputs'], link, inputMap)
                 elif input.type == 'OBJECT':
-                    nodeList[node.name]['settings']['objectID'] = inputMap[int(sourceSocketIndex)]
+                    nodeList[node.name]['settings'].append({'property' : 'objectID', 'value' : inputMap[int(sourceSocketIndex)]})
                 elif input.display_shape == 'CIRCLE':
-                    nodeList[node.name]['constants'][targetSocket.name + ' (' + targetSocketIndex + ')'] = {'type' : 'parameter', 'data' : sourceSocket.name}
+                    nodeList[node.name]['constants'].append({'socket' : targetSocket.name + ' (' + targetSocketIndex + ')', 'type' : 'parameter', 'data' : sourceSocket.name})
                 
             # handle attributes last
             for input in linkedInputs:
@@ -187,10 +184,10 @@ def exportToJSON(geomGraph):
     dictionary['name'] = graphName
     dictionary['inputs'] = []
     dictionary['parameters'] = {}
-    dictionary['nodes'] = {}
+    dictionary['nodes'] = []
 
-    dictionary['nodes']['OutputNode'] = {'type': 'output', 'inputs': {}, 'settings': {}, 'constants': {}}
-    dictionary['nodes']['InputNode'] = {'type': 'input', 'inputs': {}, 'settings': {}, 'constants': {}}
+    dictionary['nodes'].append({'name' :'OutputNode', 'type': 'output', 'inputs': {}, 'settings': [], 'constants': []})
+    dictionary['nodes'].append({'name' :'InputNode', 'type': 'input', 'inputs': {}, 'settings': [], 'constants': []})
 
     GroupInputNode = nodes.get('InputNode')
     
@@ -238,6 +235,14 @@ def exportToJSON(geomGraph):
         return
     exportLinks(nodes, dictionary, inputMap)
     
+    for dataNode in dictionary['nodes']:
+        inputs = []
+        for inputGeometry in dataNode['inputs'].keys():
+            inputs.append({'inputID' : inputGeometry})
+            inputs[-1].update(dataNode['inputs'][inputGeometry])
+        dataNode['inputs'] = inputs
+    
+
     json_object = json.dumps(dictionary, indent=4)
     with open(graphName + ".json", "w") as outfile:
         outfile.write(json_object)

@@ -8,189 +8,288 @@
         }
     ],
     "parameters": {},
-    "nodes": {
-        "OutputNode": {
+    "nodes": [
+        {
+            "name": "OutputNode",
             "type": "output",
-            "inputs": {
-                "Geometry": {
-                    "sourceNodeName": "OpenMfx Plugin.003",
-                    "socketIndex": 0,
-                    "connections": {
-                        "Geometry (0)": "OfxMeshMainOutput (0)"
-                    }
-                }
-            },
-            "settings": {},
-            "constants": {}
-        },
-        "InputNode": {
-            "type": "input",
-            "inputs": {},
-            "settings": {},
-            "constants": {}
-        },
-        "OpenMfx Plugin.002": {
-            "type": "openmfx",
-            "inputs": {
-                "OfxMeshMainInput": {
-                    "sourceNodeName": "Cube.001",
-                    "socketIndex": 0,
-                    "connections": {
-                        "OfxMeshMainInput (0)": "Mesh (0)"
-                    }
-                },
-                "OfxMeshSecondaryInput1": {
-                    "sourceNodeName": "OpenMfx Plugin.001",
-                    "socketIndex": 0,
-                    "connections": {
-                        "OfxMeshSecondaryInput1 (1)": "OfxMeshMainOutput (0)",
-                        "pointWeightA (2)": "Group (1)"
-                    }
-                }
-            },
-            "settings": {
-                "plugin": "mfx_utilities.ofx",
-                "effect": "Instancing"
-            },
-            "constants": {}
-        },
-        "OpenMfx Plugin.003": {
-            "type": "openmfx",
-            "inputs": {
-                "OfxMeshMainInput": {
-                    "sourceNodeName": "OpenMfx Plugin.002",
-                    "socketIndex": 0,
-                    "connections": {
-                        "OfxMeshMainInput (0)": "OfxMeshMainOutput (0)",
-                        "position (1)": "position (1)"
-                    }
-                },
-                "attributeExtraGeometry_2": {
-                    "sourceNodeName": "Vector Math_cpy",
-                    "socketIndex": 0,
-                    "connections": {
-                        "offset (2)": "Vector (0)"
-                    }
-                }
-            },
-            "settings": {
-                "plugin": "mfx_modifiers.ofx",
-                "effect": "SetPosition"
-            },
-            "constants": {}
-        },
-        "Cube.001": {
-            "type": "mesh_primitive",
-            "inputs": {},
-            "settings": {
-                "shape": "cube"
-            },
-            "constants": {
-                "Size (0)": {
-                    "type": "value",
-                    "data": [
-                        0.20000000298023224,
-                        0.20000000298023224,
-                        0.20000000298023224
-                    ]
-                },
-                "Vertices X (1)": {
-                    "type": "value",
-                    "data": 2
-                },
-                "Vertices Y (2)": {
-                    "type": "value",
-                    "data": 2
-                },
-                "Vertices Z (3)": {
-                    "type": "value",
-                    "data": 2
-                }
-            }
-        },
-        "OpenMfx Plugin": {
-            "type": "openmfx",
-            "inputs": {
-                "OfxMeshMainInput": {
-                    "sourceNodeName": "InputNode",
-                    "socketIndex": 0,
-                    "connections": {
-                        "OfxMeshMainInput (0)": "Geometry (0)"
-                    }
-                }
-            },
-            "settings": {
-                "plugin": "mfx_utilities.ofx",
-                "effect": "Array"
-            },
-            "constants": {
-                "Count (1)": {
-                    "type": "value",
-                    "data": 2
-                },
-                "Translation (2)": {
-                    "type": "value",
-                    "data": [
-                        5.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            }
-        },
-        "OpenMfx Plugin.001": {
-            "type": "openmfx",
-            "inputs": {
-                "OfxMeshMainInput": {
+            "inputs": [
+                {
+                    "inputID": "Geometry",
                     "sourceNodeName": "OpenMfx Plugin",
                     "socketIndex": 0,
-                    "connections": {
-                        "OfxMeshMainInput (0)": "OfxMeshMainOutput (0)"
-                    }
+                    "connections": [
+                        {
+                            "from": "Geometry (0)",
+                            "to": "OfxMeshMainOutput (0)"
+                        }
+                    ]
                 }
-            },
-            "settings": {
-                "plugin": "mfx_utilities.ofx",
-                "effect": "Array"
-            },
-            "constants": {
-                "Count (1)": {
+            ],
+            "settings": [],
+            "constants": []
+        },
+        {
+            "name": "InputNode",
+            "type": "input",
+            "inputs": [],
+            "settings": [],
+            "constants": []
+        },
+        {
+            "name": "Store Named Attribute",
+            "type": "save_named_attribute",
+            "inputs": [
+                {
+                    "inputID": "Geometry",
+                    "sourceNodeName": "Cube",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "Geometry (0)",
+                            "to": "Mesh (0)"
+                        }
+                    ]
+                },
+                {
+                    "inputID": "attributeExtraGeometry_2",
+                    "sourceNodeName": "Vector Math_cpy",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "Value (2)",
+                            "to": "Vector (0)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "data_type",
+                    "value": "FLOAT_VECTOR"
+                },
+                {
+                    "property": "domain",
+                    "value": "POINT"
+                }
+            ],
+            "constants": [
+                {
+                    "socket": "Name (1)",
+                    "type": "value",
+                    "data": "Attr1"
+                },
+                {
+                    "socket": "Value (5)",
+                    "type": "value",
+                    "data": false
+                }
+            ]
+        },
+        {
+            "name": "Cube",
+            "type": "mesh_primitive",
+            "inputs": [],
+            "settings": [
+                {
+                    "property": "shape",
+                    "value": "cube"
+                }
+            ],
+            "constants": [
+                {
+                    "socket": "Size (0)",
+                    "type": "value",
+                    "data": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "socket": "Vertices X (1)",
                     "type": "value",
                     "data": 2
                 },
-                "Translation (2)": {
+                {
+                    "socket": "Vertices Y (2)",
                     "type": "value",
-                    "data": [
-                        0.0,
-                        5.0,
-                        0.0
+                    "data": 2
+                },
+                {
+                    "socket": "Vertices Z (3)",
+                    "type": "value",
+                    "data": 2
+                }
+            ]
+        },
+        {
+            "name": "OpenMfx Plugin",
+            "type": "openmfx",
+            "inputs": [
+                {
+                    "inputID": "OfxMeshMainInput",
+                    "sourceNodeName": "OpenMfx Plugin.001",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "OfxMeshMainInput (0)",
+                            "to": "OfxMeshMainOutput (0)"
+                        },
+                        {
+                            "from": "position (1)",
+                            "to": "position (1)"
+                        },
+                        {
+                            "from": "offset (2)",
+                            "to": "Attr1 (2)"
+                        }
                     ]
                 }
-            }
+            ],
+            "settings": [
+                {
+                    "property": "plugin",
+                    "value": "mfx_modifiers.ofx"
+                },
+                {
+                    "property": "effect",
+                    "value": "SetPosition"
+                }
+            ],
+            "constants": []
         },
-        "Vector Math_cpy": {
-            "type": "math",
-            "inputs": {
-                "attributeExtraGeometry_0": {
-                    "sourceNodeName": "OpenMfx Plugin.002",
+        {
+            "name": "OpenMfx Plugin.001",
+            "type": "openmfx",
+            "inputs": [
+                {
+                    "inputID": "OfxMeshMainInput",
+                    "sourceNodeName": "Store Named Attribute",
                     "socketIndex": 0,
-                    "connections": {
-                        "Vector (0)": "normal (2)"
+                    "connections": [
+                        {
+                            "from": "OfxMeshMainInput (0)",
+                            "to": "Geometry (0)"
+                        }
+                    ]
+                },
+                {
+                    "inputID": "OfxMeshSecondaryInput1",
+                    "sourceNodeName": "InputNode",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "OfxMeshSecondaryInput1 (1)",
+                            "to": "Geometry (0)"
+                        },
+                        {
+                            "from": "pointWeightA (2)",
+                            "to": "Group (1)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "plugin",
+                    "value": "mfx_utilities.ofx"
+                },
+                {
+                    "property": "effect",
+                    "value": "Instancing"
+                }
+            ],
+            "constants": []
+        },
+        {
+            "name": "Noise Texture_cpy",
+            "type": "math",
+            "inputs": [
+                {
+                    "inputID": "attributeExtraGeometry_0",
+                    "sourceNodeName": "Cube",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "Vector (0)",
+                            "to": "normal (1)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "noise_dimensions",
+                    "value": "3D"
+                },
+                {
+                    "property": "operation",
+                    "value": {
+                        "operation": "texture",
+                        "info": "noise"
                     }
                 }
-            },
-            "settings": {
-                "operation": {
-                    "operation": "scale",
-                    "info": "vector"
-                }
-            },
-            "constants": {
-                "Scale (3)": {
+            ],
+            "constants": [
+                {
+                    "socket": "Scale (2)",
                     "type": "value",
-                    "data": 0.20000000298023224
+                    "data": 2.3000001907348633
+                },
+                {
+                    "socket": "Detail (3)",
+                    "type": "value",
+                    "data": 0.40000009536743164
+                },
+                {
+                    "socket": "Roughness (4)",
+                    "type": "value",
+                    "data": 0.25833332538604736
+                },
+                {
+                    "socket": "Distortion (5)",
+                    "type": "value",
+                    "data": 1.1999999284744263
                 }
-            }
+            ]
+        },
+        {
+            "name": "Vector Math_cpy",
+            "type": "math",
+            "inputs": [
+                {
+                    "inputID": "attributeExtraGeometry_0",
+                    "sourceNodeName": "Noise Texture_cpy",
+                    "socketIndex": 1,
+                    "connections": [
+                        {
+                            "from": "Vector (0)",
+                            "to": "Color (1)"
+                        }
+                    ]
+                },
+                {
+                    "inputID": "attributeExtraGeometry_1",
+                    "sourceNodeName": "Cube",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "Vector (1)",
+                            "to": "normal (1)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "operation",
+                    "value": {
+                        "operation": "project",
+                        "info": "vector"
+                    }
+                }
+            ],
+            "constants": []
         }
-    }
+    ]
 }
