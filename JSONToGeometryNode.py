@@ -5,7 +5,8 @@ import json
 
 PLUGIN_FOLDER_PATH = 'C:\\Users\\yassi\\Desktop\\Projects\\OpenMFX\\MfxTutorial\\build\\Debug\\'
 
-def importFromJSON(graphName = 'test1'):
+
+def importGraphDescitptionFromJSON(graphName = 'test1'):
     f = open(graphName + '.json')
     data = json.load(f)
     
@@ -129,3 +130,29 @@ def importFromJSON(graphName = 'test1'):
 
     autoAlignNodes(geomNodesGraph['OutputNode'])
     f.close()
+    return node_group
+
+def importMeshEffectFromJson(settingsFile, object):
+    f = open(settingsFile + '.json')
+    data = json.load(f)
+
+    bpy.context.view_layer.objects.active = object
+    object.select_set(True)
+    ao = bpy.context.active_object
+    modifier = object.modifiers.new(data['effectName'], "NODES")
+    modifier.node_group = importGraphDescitptionFromJSON(data['graphName'])
+    
+    for parameterData in data['parameters']:
+        inputSocket = modifier.node_group.inputs[parameterData['name']]
+        if parameterData['type'] == 'constant':
+            modifier[inputSocket.identifier] = parameterData['data'][parameterData['data']['case']]
+        else:
+            modifier[inputSocket.identifier + '_use_attribute'] = True
+            modifier[inputSocket.identifier + '_attribute_name'] = parameterData['data']['as_string']
+
+    for objectInput in data['objectInputs']:
+        inputSocket = modifier.node_group.inputs[objectInput['name']]
+        modifier[inputSocket.identifier] = bpy.data.objects[objectInput['object']]
+
+    f.close()
+    return 0

@@ -3,7 +3,6 @@
 import bpy
 from  autoAlign import *
 
-
 typeToSocketDict = {}
 typeToSocketDict['GEOMETRY'] = 'NodeSocketGeometry'
 typeToSocketDict['VALUE'] = 'NodeSocketFloat'
@@ -31,8 +30,6 @@ def isInputField(node):
                                         'GeometryNodeInputIndex', 
                                         'GeometryNodeInputRadius',
                                         'GeometryNodeInputNamedAttribute']
-
-
 
 ### function used for the canonization
 def getInputFieldName(node): #TODO: currently, only constant names are handled
@@ -87,7 +84,7 @@ def stringToConstantValue(s):
         'as_color': (0,0,0,0),
         'as_string': s
     } 
-map = {
+inputTypeConstantValueMap = {
         'BOOLEAN': 'as_bool',
         'INT': 'as_int',
         'VALUE': 'as_float',
@@ -97,29 +94,50 @@ map = {
     }
 def getDefaultValue(input): 
     def_val = {
-        'case' : map[input.type],
+        'case' : inputTypeConstantValueMap[input.type],
         'as_bool': True,
         'as_int': 0,
         'as_float': 0.0,
         'as_vector': (0,0,0),
         'as_color': (0,0,0,0),
         'as_string': ''
-    }   
-    
+    }
     if input.type in ['STRING', 'BOOLEAN', 'INT', 'VALUE']:
-        def_val[map[input.type]] =  input.default_value
+        def_val[inputTypeConstantValueMap[input.type]] =  input.default_value
     elif input.type == 'VECTOR':
-        def_val[map[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2])
+        def_val[inputTypeConstantValueMap[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2])
     elif input.type == 'RGBA':
-        def_val[map[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2], input.default_value[3]) 
+        def_val[inputTypeConstantValueMap[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2], input.default_value[3]) 
     return  def_val
+valueTypeConstantValueMap = {
+        bool: 'as_bool',
+        int: 'as_int',
+        float: 'as_float',
+        (tuple, 3): 'as_vector',
+        (tuple, 4): 'as_color',
+        str: 'as_string',
+    }
+def formatValue(value):
+    key = valueTypeConstantValueMap[(tuple, len(value))] if isinstance(value, tuple) else valueTypeConstantValueMap[type(value)]
+    def_val = {
+        'case' : key,
+        'as_bool': True,
+        'as_int': 0,
+        'as_float': 0.0,
+        'as_vector': (0,0,0),
+        'as_color': (0,0,0,0),
+        'as_string': ''
+    }
+    def_val[key] = value
+    return def_val
+
 
 def isAttributeOperationNode(node): #make sure this is sufficient
     return not isDataFlowNode(node) and not isInputField(node)
 
 #Todo: get default values from blender (for the moment they are hard coded)
 def isDefault(input, def_val):
-    val = def_val[map[input.type]]
+    val = def_val[inputTypeConstantValueMap[input.type]]
     if input.node.type == 'TEX_NOISE':
         if input.name == 'Scale':
             return val == 5.0

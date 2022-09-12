@@ -6,7 +6,7 @@ import json
 
 blenderToOpenMfxMap = {} # 'TODO: blendernode -> openmfxNode'
 
-# currently: blender node are not exported exactly like the standard (we export other data and treat the node as a special case) TODO: generalize thos
+# currently: blender node are not exported exactly like the standard (we export other data and treat the node as a special case) TODO: generalize thss
 
 def typeIsHandled(type): # TODO: in these cases replace the node with an OpenMfx One
     if type.startswith('MESH_PRIMITIVE'):
@@ -49,7 +49,7 @@ def exportNodes(nodes, dictionary):
             
             # set node type and settings
             if node.type == 'GROUP':
-                exportToJSON(node.node_tree)
+                exportGraphDescitptionToJSON(node.node_tree)
                 nodeList[-1]['type'] = 'group'
                 nodeList[-1]['settings'].append({'property' : "graph", 'value' : node.node_tree.name})
             elif node.type == 'OPEN_MFX':
@@ -173,7 +173,7 @@ def exportLinks(nodes, dictionary, inputMap):
                 if input.display_shape == 'DIAMOND':
                     addConnection(nodeData['inputs'], input.links[0], inputMap)
 
-def exportToJSON(geomGraph):
+def exportGraphDescitptionToJSON(geomGraph, deleteAdditionalData = True):
     graphName = geomGraph.name  
     node_group = duplicateGraphAndEnsureConnections(geomGraph)
     preProcess(node_group)
@@ -249,8 +249,58 @@ def exportToJSON(geomGraph):
     json_object = json.dumps(dictionary, indent=4)
     with open(graphName + ".json", "w") as outfile:
         outfile.write(json_object)
+        outfile.close()
+
+    if deleteAdditionalData:
+        bpy.data.node_groups.remove(node_group)
+        for multiplexerGroup in multiplexers:
+            bpy.data.node_groups.remove(multiplexerGroup)
+        multiplexers = []
+
+    return node_group, multiplexers
     
+def exportGraphAndSettingsToJSON(object, geometryNode):
+    modifier = object.modifiers[0] # TODO: select correct modifier  
+    dictionary = {'effectName': modifier.name, 'graphName' :  geometryNode.name, 'parameters' : [], 'objectInputs' : []}
+
+    for input in geometryNode.inputs:
+        id = input.identifier
+        if not modifier.get(id):
+            continue
+        value = modifier[id]   
+        if input.type in ['INT', 'VALUE', 'STRING', 'BOOLEAN', 'VECTOR', 'COLOR']:
+            if modifier.get(id + '_use_attribute') and modifier[id + '_use_attribute']:
+                dictionary['parameters'].append({'name': input.name, 'type':'attribute', 'data': stringToConstantValue(modifier[id + '_attribute_name'])})
+            else:
+                dictionary['parameters'].append({'name': input.name, 'type':'constant', 'data': formatValue(value)})
+    
+    
+    bpy.context.view_layer.objects.active = object
+    object.select_set(True) # Set active to get correct input values
+    ao = bpy.context.active_object
+    modifier = ao.modifiers[0] # TODO: select correct modifier  
+    node_group, multiplexers = exportGraphDescitptionToJSON(geometryNode, False)
+    modifier.node_group = node_group
+    for input in node_group.inputs:
+        id = input.identifier
+        if not modifier.get(id):
+            continue
+        value = modifier[id]
+        
+        if input.type == 'OBJECT':
+            dictionary['objectInputs'].append({'name': input.name, 'object': ''})
+            if modifier[id] is not None:
+                dictionary['objectInputs'][-1]['object'] = modifier[id].name
+        elif input.type  not in ['INT', 'VALUE', 'STRING', 'BOOLEAN', 'VECTOR', 'COLOR']: 
+            print('Error: input of unsupported type -> ' + input.type)
+
+    json_object = json.dumps(dictionary, indent=4)
+    with open(object.name + '_settings' + ".json", "w") as outfile:
+        outfile.write(json_object)
+        outfile.close()
+
     bpy.data.node_groups.remove(node_group)
     for multiplexerGroup in multiplexers:
         bpy.data.node_groups.remove(multiplexerGroup)
     
+    modifier.node_group = geometryNode

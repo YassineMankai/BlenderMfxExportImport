@@ -1,0 +1,34 @@
+{
+    "effectName": "GeometryNodes",
+    "graphName": "test1",
+    "parameters": [
+        {
+            "name": "BaseCubeSIzeScaleOffset",
+            "type": "constant",
+            "data": {
+                "case": "as_float",
+                "as_bool": true,
+                "as_int": 0,
+                "as_float": 0.019999999552965164,
+                "as_vector": [
+                    0,
+                    0,
+                    0
+                ],
+                "as_color": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "as_string": ""
+            }
+        }
+    ],
+    "objectInputs": [
+        {
+            "name": "Object",
+            "object": "Icosphere"
+        }
+    ]
+}

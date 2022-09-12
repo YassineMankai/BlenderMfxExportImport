@@ -145,6 +145,11 @@ def preProcess(graph):
         if node.bl_idname == 'NodeGroupInput' and node != GroupInputNode:
             graph.nodes.remove(node) 
     GroupInputNode.name = 'InputNode'
+    for output in GroupInputNode.outputs:
+        if output.type == 'CUSTOM':
+            continue
+        if len(output.links) == 0:
+            graph.inputs.remove(graph.inputs[output.name])
 
     # keep one output node
     GroupOutputNode = graph.nodes.new('NodeGroupOutput')

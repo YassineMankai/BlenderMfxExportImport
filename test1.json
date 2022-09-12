@@ -80,7 +80,7 @@
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math_cpy_cpy_cpy",
+                    "sourceNodeName": "Vector Math_cpy_cpy_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -126,79 +126,6 @@
             ]
         },
         {
-            "name": "OpenMfx Plugin.001",
-            "type": "openmfx",
-            "inputs": [
-                {
-                    "inputID": "OfxMeshMainInput",
-                    "sourceNodeName": "OpenMfx Plugin",
-                    "socketIndex": 0,
-                    "connections": [
-                        {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "OfxMeshMainOutput (0)"
-                        }
-                    ]
-                }
-            ],
-            "settings": [
-                {
-                    "property": "plugin",
-                    "value": "mfx_utilities.ofx"
-                },
-                {
-                    "property": "effect",
-                    "value": "Array"
-                }
-            ],
-            "constants": [
-                {
-                    "socket": "Count (1)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_int",
-                        "as_bool": true,
-                        "as_int": 2,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
-                    }
-                },
-                {
-                    "socket": "Translation (2)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_vector",
-                        "as_bool": true,
-                        "as_int": 0,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            5.0,
-                            0.0,
-                            0.0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
-                    }
-                }
-            ]
-        },
-        {
             "name": "OpenMfx Plugin.003",
             "type": "openmfx",
             "inputs": [
@@ -226,7 +153,7 @@
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math.001_cpy_cpy_cpy",
+                    "sourceNodeName": "Vector Math.001_cpy_cpy_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -285,22 +212,6 @@
             "constants": []
         },
         {
-            "name": "Object Info",
-            "type": "input_object",
-            "inputs": [],
-            "settings": [
-                {
-                    "property": "transform_space",
-                    "value": "ORIGINAL"
-                },
-                {
-                    "property": "objectID",
-                    "value": 2
-                }
-            ],
-            "constants": []
-        },
-        {
             "name": "OpenMfx Plugin",
             "type": "openmfx",
             "inputs": [
@@ -352,7 +263,96 @@
             ]
         },
         {
-            "name": "Vector Math.001_cpy_cpy_cpy",
+            "name": "OpenMfx Plugin.001",
+            "type": "openmfx",
+            "inputs": [
+                {
+                    "inputID": "OfxMeshMainInput",
+                    "sourceNodeName": "OpenMfx Plugin",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "OfxMeshMainInput (0)",
+                            "to": "OfxMeshMainOutput (0)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "plugin",
+                    "value": "mfx_utilities.ofx"
+                },
+                {
+                    "property": "effect",
+                    "value": "Array"
+                }
+            ],
+            "constants": [
+                {
+                    "socket": "Count (1)",
+                    "type": "value",
+                    "data": {
+                        "case": "as_int",
+                        "as_bool": true,
+                        "as_int": 1,
+                        "as_float": 0.0,
+                        "as_vector": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "as_color": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "as_string": ""
+                    }
+                },
+                {
+                    "socket": "Translation (2)",
+                    "type": "value",
+                    "data": {
+                        "case": "as_vector",
+                        "as_bool": true,
+                        "as_int": 0,
+                        "as_float": 0.0,
+                        "as_vector": [
+                            5.0,
+                            0.0,
+                            0.0
+                        ],
+                        "as_color": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "as_string": ""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Object Info",
+            "type": "input_object",
+            "inputs": [],
+            "settings": [
+                {
+                    "property": "transform_space",
+                    "value": "ORIGINAL"
+                },
+                {
+                    "property": "objectID",
+                    "value": 2
+                }
+            ],
+            "constants": []
+        },
+        {
+            "name": "Vector Math.001_cpy_cpy_cpy_cpy",
             "type": "math",
             "inputs": [
                 {
@@ -402,7 +402,7 @@
             ]
         },
         {
-            "name": "Vector Math_cpy_cpy_cpy",
+            "name": "Vector Math_cpy_cpy_cpy_cpy",
             "type": "math",
             "inputs": [
                 {
