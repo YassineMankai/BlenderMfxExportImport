@@ -3,6 +3,8 @@ from  autoAlign import *
 from  helpers import *
 import json
 
+PLUGIN_FOLDER_PATH = 'C:\\Users\\yassi\\Desktop\\Projects\\OpenMFX\\MfxTutorial\\build\\Debug\\'
+
 def importFromJSON(graphName = 'test1'):
     f = open(graphName + '.json')
     data = json.load(f)
@@ -70,7 +72,7 @@ def importFromJSON(graphName = 'test1'):
             case 'openmfx':
                 geomNodesGraph[nodeName] = nodes.new('GeometryNodeOpenMfx')
                 # TODO: use a database
-                geomNodesGraph[nodeName].plugin_path = 'C:\\Users\\yassi\\Desktop\\Projects\\OpenMFX\\MfxTutorial\\build\\Debug\\' + nodeData['settings']['plugin']
+                geomNodesGraph[nodeName].plugin_path = PLUGIN_FOLDER_PATH + nodeData['settings']['plugin']
                 geomNodesGraph[nodeName].effect_enum = nodeData['settings']['effect']      
         
         geomNodesGraph[nodeName].name = nodeName
