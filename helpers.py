@@ -47,6 +47,8 @@ def getSourceInputIndex(socket):
             return 2
         else:
             return 0
+    elif (socket.node.type == 'OBJECT_INFO'):
+        return 3
     else: 
     # TODO: for now, we suppose requested attributes socket are listed directly after the corresponding geometry
         while(socketIndex >= 0 and socket.node.inputs[socketIndex].type != 'GEOMETRY'):

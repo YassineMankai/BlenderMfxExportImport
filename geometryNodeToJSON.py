@@ -89,7 +89,8 @@ def getSourceData(sourceSocket, inputMap):
             realLink = multiplexer.inputs[sourceSocketIndex].links[0]
             return getSourceData(realLink.from_socket, inputMap)
         else:
-            realLink = multiplexer.inputs[0].links[0]
+            i = [input.type for input in multiplexer.inputs].index('GEOMETRY')
+            realLink = multiplexer.inputs[i].links[0]
             return getSourceData(realLink.from_socket, inputMap)
     
     elif sourceSocket.type == 'GEOMETRY':

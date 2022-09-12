@@ -69,6 +69,7 @@ def generateMultiplexerFromNode(node, inputFields):
 
     nodeGroupInput = wrapperGroup.nodes.new('NodeGroupInput')
     nodeGroupOutput = wrapperGroup.nodes.new('NodeGroupOutput')
+
     for outputIndex in range(len(node.outputs)):
         output = node.outputs[outputIndex]
         if output.type == 'CUSTOM':

@@ -28,32 +28,14 @@
                     }
                 }
             ]
-        }
-    ],
-    "parameters": [
+        },
         {
-            "name": "BaseCubeSize",
-            "type": "VECTOR",
-            "default_value": {
-                "case": "as_vector",
-                "as_bool": true,
-                "as_int": 0,
-                "as_float": 0.0,
-                "as_vector": [
-                    0.10000000149011612,
-                    0.10000000149011612,
-                    0.10000000149011612
-                ],
-                "as_color": [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "as_string": ""
-            }
+            "sourceType": "object",
+            "name": "Object",
+            "attributes": []
         }
     ],
+    "parameters": [],
     "nodes": [
         {
             "name": "OutputNode",
@@ -87,18 +69,18 @@
             "inputs": [
                 {
                     "inputID": "Geometry",
-                    "sourceNodeName": "Cube",
-                    "socketIndex": 0,
+                    "sourceNodeName": "Object Info",
+                    "socketIndex": 3,
                     "connections": [
                         {
                             "from": "Geometry (0)",
-                            "to": "Mesh (0)"
+                            "to": "Geometry (3)"
                         }
                     ]
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math_cpy_cpy",
+                    "sourceNodeName": "Vector Math_cpy_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -139,158 +121,6 @@
                             0
                         ],
                         "as_string": "Attrb1"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Cube",
-            "type": "mesh_primitive",
-            "inputs": [],
-            "settings": [
-                {
-                    "property": "shape",
-                    "value": "cube"
-                }
-            ],
-            "constants": [
-                {
-                    "socket": "Vertices X (1)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_int",
-                        "as_bool": true,
-                        "as_int": 2,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
-                    }
-                },
-                {
-                    "socket": "Vertices Y (2)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_int",
-                        "as_bool": true,
-                        "as_int": 2,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
-                    }
-                },
-                {
-                    "socket": "Vertices Z (3)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_int",
-                        "as_bool": true,
-                        "as_int": 2,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
-                    }
-                },
-                {
-                    "socket": "Size (0)",
-                    "type": "parameter",
-                    "data": {
-                        "case": "as_string",
-                        "as_bool": true,
-                        "as_int": 0,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": "BaseCubeSize"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "OpenMfx Plugin",
-            "type": "openmfx",
-            "inputs": [
-                {
-                    "inputID": "OfxMeshMainInput",
-                    "sourceNodeName": "InputNode",
-                    "socketIndex": 0,
-                    "connections": [
-                        {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "Geometry (0)"
-                        }
-                    ]
-                }
-            ],
-            "settings": [
-                {
-                    "property": "plugin",
-                    "value": "mfx_utilities.ofx"
-                },
-                {
-                    "property": "effect",
-                    "value": "Transform"
-                }
-            ],
-            "constants": [
-                {
-                    "socket": "Scale (3)",
-                    "type": "value",
-                    "data": {
-                        "case": "as_vector",
-                        "as_bool": true,
-                        "as_int": 0,
-                        "as_float": 0.0,
-                        "as_vector": [
-                            0.5,
-                            0.5,
-                            0.5
-                        ],
-                        "as_color": [
-                            0,
-                            0,
-                            0,
-                            0
-                        ],
-                        "as_string": ""
                     }
                 }
             ]
@@ -396,7 +226,7 @@
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math.001_cpy_cpy",
+                    "sourceNodeName": "Vector Math.001_cpy_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -455,45 +285,74 @@
             "constants": []
         },
         {
-            "name": "Vector Math_cpy_cpy",
-            "type": "math",
-            "inputs": [
+            "name": "Object Info",
+            "type": "input_object",
+            "inputs": [],
+            "settings": [
                 {
-                    "inputID": "attributeExtraGeometry_0",
-                    "sourceNodeName": "Cube",
-                    "socketIndex": 0,
-                    "connections": [
-                        {
-                            "from": "Vector (0)",
-                            "to": "normal (1)"
-                        }
-                    ]
+                    "property": "transform_space",
+                    "value": "ORIGINAL"
                 },
                 {
-                    "inputID": "attributeExtraGeometry_3",
+                    "property": "objectID",
+                    "value": 2
+                }
+            ],
+            "constants": []
+        },
+        {
+            "name": "OpenMfx Plugin",
+            "type": "openmfx",
+            "inputs": [
+                {
+                    "inputID": "OfxMeshMainInput",
                     "sourceNodeName": "InputNode",
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "Scale (3)",
-                            "to": "BaseCubeSIzeScaleOffset (1)"
+                            "from": "OfxMeshMainInput (0)",
+                            "to": "Geometry (0)"
                         }
                     ]
                 }
             ],
             "settings": [
                 {
-                    "property": "operation",
-                    "value": {
-                        "operation": "scale",
-                        "info": "vector"
-                    }
+                    "property": "plugin",
+                    "value": "mfx_utilities.ofx"
+                },
+                {
+                    "property": "effect",
+                    "value": "Transform"
                 }
             ],
-            "constants": []
+            "constants": [
+                {
+                    "socket": "Scale (3)",
+                    "type": "value",
+                    "data": {
+                        "case": "as_vector",
+                        "as_bool": true,
+                        "as_int": 0,
+                        "as_float": 0.0,
+                        "as_vector": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
+                        "as_color": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "as_string": ""
+                    }
+                }
+            ]
         },
         {
-            "name": "Vector Math.001_cpy_cpy",
+            "name": "Vector Math.001_cpy_cpy_cpy",
             "type": "math",
             "inputs": [
                 {
@@ -525,7 +384,7 @@
                         "case": "as_float",
                         "as_bool": true,
                         "as_int": 0,
-                        "as_float": 3.0,
+                        "as_float": 0.20000000298023224,
                         "as_vector": [
                             0,
                             0,
@@ -541,6 +400,44 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Vector Math_cpy_cpy_cpy",
+            "type": "math",
+            "inputs": [
+                {
+                    "inputID": "attributeExtraGeometry_0",
+                    "sourceNodeName": "Object Info",
+                    "socketIndex": 3,
+                    "connections": [
+                        {
+                            "from": "Vector (0)",
+                            "to": "normal (4)"
+                        }
+                    ]
+                },
+                {
+                    "inputID": "attributeExtraGeometry_3",
+                    "sourceNodeName": "InputNode",
+                    "socketIndex": 0,
+                    "connections": [
+                        {
+                            "from": "Scale (3)",
+                            "to": "BaseCubeSIzeScaleOffset (1)"
+                        }
+                    ]
+                }
+            ],
+            "settings": [
+                {
+                    "property": "operation",
+                    "value": {
+                        "operation": "scale",
+                        "info": "vector"
+                    }
+                }
+            ],
+            "constants": []
         }
     ]
 }
