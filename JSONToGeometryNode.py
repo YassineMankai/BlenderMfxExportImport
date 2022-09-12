@@ -81,11 +81,12 @@ def importFromJSON(graphName = 'test1'):
 
         if nodeData['type'] in handledTypes:
             for constant in nodeData['constants']:
+                dataType = constant['data']['case']
                 socketIndex = getSocketIndexFromComposedKey(constant['socket'])
                 if (constant['type'] == 'value'):
-                    geomNodesGraph[nodeName].inputs[socketIndex].default_value = constant['data']
+                    geomNodesGraph[nodeName].inputs[socketIndex].default_value = constant['data'][dataType]
                 elif (constant['type'] == 'parameter'):
-                    link(geomNodesGraph['InputNode'].outputs[constant['data']], geomNodesGraph[nodeName].inputs[socketIndex])
+                    link(geomNodesGraph['InputNode'].outputs[constant['data'][dataType]], geomNodesGraph[nodeName].inputs[socketIndex])
         
         if nodeData['type'] not in skipSettings:
             for prop in geomNodesGraph[nodeName].bl_rna.properties:

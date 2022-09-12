@@ -75,14 +75,41 @@ def getPluginName(openmfxNode):
     # TODO: switch system
     return openmfxNode.plugin_path.split('\\')[-1]
 
-def getDefaultValue(input):
-    def_val = 0
+def stringToConstantValue(s):
+    return {
+        'case' : 'as_string',
+        'as_bool': True,
+        'as_int': 0,
+        'as_float': 0.0,
+        'as_vector': (0,0,0),
+        'as_color': (0,0,0,0),
+        'as_string': s
+    } 
+map = {
+        'BOOLEAN': 'as_bool',
+        'INT': 'as_int',
+        'VALUE': 'as_float',
+        'VECTOR': 'as_vector',
+        'RGBA': 'as_color',
+        'STRING': 'as_string',
+    }
+def getDefaultValue(input): 
+    def_val = {
+        'case' : map[input.type],
+        'as_bool': True,
+        'as_int': 0,
+        'as_float': 0.0,
+        'as_vector': (0,0,0),
+        'as_color': (0,0,0,0),
+        'as_string': ''
+    }   
+    
     if input.type in ['STRING', 'BOOLEAN', 'INT', 'VALUE']:
-        def_val =  input.default_value
+        def_val[map[input.type]] =  input.default_value
     elif input.type == 'VECTOR':
-        def_val = (input.default_value[0], input.default_value[1], input.default_value[2])
+        def_val[map[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2])
     elif input.type == 'RGBA':
-        def_val = (input.default_value[0], input.default_value[1], input.default_value[2], input.default_value[3])
+        def_val[map[input.type]] = (input.default_value[0], input.default_value[1], input.default_value[2], input.default_value[3]) 
     return  def_val
 
 def isAttributeOperationNode(node): #make sure this is sufficient
@@ -90,23 +117,26 @@ def isAttributeOperationNode(node): #make sure this is sufficient
 
 #Todo: get default values from blender (for the moment they are hard coded)
 def isDefault(input, def_val):
+    val = def_val[map[input.type]]
     if input.node.type == 'TEX_NOISE':
         if input.name == 'Scale':
-            return def_val == 5.0
+            return val == 5.0
         elif input.name == 'Detail':
-            return def_val == 2.0 
+            return val == 2.0 
         elif input.name == 'Roughness':
-            return def_val == 0.5 
+            return val == 0.5 
         elif input.name == 'Distortion':
-            return def_val == 0.0 
+            return val == 0.0 
         return True
+    elif input.type == 'STRING':
+        return val == ''
     elif input.name == 'Scale':
-        if hasattr(input.node, 'operation') and (input.node.operation != 'SCALE' or def_val == 1.0):
+        if hasattr(input.node, 'operation') and (input.node.operation != 'SCALE' or val == 1.0):
             return True
     elif input.type == 'BOOLEAN':
-        return def_val == True
+        return val if input.name == 'Selection' else not val
     else:
-        return def_val == 0 or def_val == (0,0,0) or def_val == (0,0,0,0)
+        return val == 0 or val == (0,0,0) or val == (0,0,0,0)
 
 
 

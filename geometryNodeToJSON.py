@@ -101,7 +101,7 @@ def getSourceData(sourceSocket, inputMap):
         else:
             while sourceSocket.node.outputs[sourceSocketIndex].type != 'GEOMETRY':
                 sourceSocketIndex -= 1
-            return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': getSourceIndex(sourceSocket.node.outputs[sourceSocketIndex], inputMap), 'connections' : {}}
+            return {'sourceNodeName': sourceSocket.node.name, 'socketIndex': getSourceIndex(sourceSocket.node.outputs[sourceSocketIndex], inputMap), 'connections' : []}
 
 def addConnection(inputData, link, inputMap):
     sourceSocket = link.from_socket
@@ -162,9 +162,10 @@ def exportLinks(nodes, dictionary, inputMap):
                     nodeData['inputs'][input.name] = getSourceData(link.from_socket, inputMap)
                     addConnection(nodeData['inputs'], link, inputMap)
                 elif input.type == 'OBJECT':
-                    nodeList[node.name]['settings'].append({'property' : 'objectID', 'value' : inputMap[int(sourceSocketIndex)]})
+                    nodeData['settings'].append({'property' : 'objectID', 'value' : inputMap[int(sourceSocketIndex)]})
                 elif input.display_shape == 'CIRCLE':
-                    nodeList[node.name]['constants'].append({'socket' : targetSocket.name + ' (' + targetSocketIndex + ')', 'type' : 'parameter', 'data' : sourceSocket.name})
+                    val = stringToConstantValue(sourceSocket.name)
+                    nodeData['constants'].append({'socket' : targetSocket.name + ' (' + targetSocketIndex + ')', 'type' : 'parameter', 'data' : val})
                 
             # handle attributes last
             for input in linkedInputs:
