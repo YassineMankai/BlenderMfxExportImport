@@ -30,8 +30,9 @@
             ]
         }
     ],
-    "parameters": {
-        "BaseCubeSize": {
+    "parameters": [
+        {
+            "name": "BaseCubeSize",
             "type": "VECTOR",
             "default_value": {
                 "case": "as_vector",
@@ -52,19 +53,19 @@
                 "as_string": ""
             }
         }
-    },
+    ],
     "nodes": [
         {
             "name": "OutputNode",
             "type": "output",
             "inputs": [
                 {
-                    "inputID": "Geometry",
+                    "inputID": "OfxMeshMainOutput",
                     "sourceNodeName": "OpenMfx Plugin.002",
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "Geometry (0)",
+                            "from": "OfxMeshMainOutput (0)",
                             "to": "OfxMeshMainOutput (0)"
                         }
                     ]
@@ -97,7 +98,7 @@
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math_cpy",
+                    "sourceNodeName": "Vector Math_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -279,9 +280,9 @@
                         "as_int": 0,
                         "as_float": 0.0,
                         "as_vector": [
-                            0.20000000298023224,
-                            0.20000000298023224,
-                            0.20000000298023224
+                            0.5,
+                            0.5,
+                            0.5
                         ],
                         "as_color": [
                             0,
@@ -395,7 +396,7 @@
                 },
                 {
                     "inputID": "attributeExtraGeometry_2",
-                    "sourceNodeName": "Vector Math.001_cpy",
+                    "sourceNodeName": "Vector Math.001_cpy_cpy",
                     "socketIndex": 0,
                     "connections": [
                         {
@@ -432,11 +433,11 @@
                         },
                         {
                             "from": "position (1)",
-                            "to": "position (2)"
+                            "to": "position (1)"
                         },
                         {
                             "from": "offset (2)",
-                            "to": "Attrb1 (1)"
+                            "to": "Attrb1 (2)"
                         }
                     ]
                 }
@@ -454,7 +455,7 @@
             "constants": []
         },
         {
-            "name": "Vector Math_cpy",
+            "name": "Vector Math_cpy_cpy",
             "type": "math",
             "inputs": [
                 {
@@ -492,7 +493,7 @@
             "constants": []
         },
         {
-            "name": "Vector Math.001_cpy",
+            "name": "Vector Math.001_cpy_cpy",
             "type": "math",
             "inputs": [
                 {

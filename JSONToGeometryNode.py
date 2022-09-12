@@ -32,10 +32,15 @@ def importFromJSON(graphName = 'test1'):
             addSocket(node_group.inputs, 'GEOMETRY', input['name'])
         elif input['sourceType'] == 'object':
             addSocket(node_group.inputs, 'OBJECT', input['name'])
+
         for attribute in input['attributes']:
-            addSocket(node_group.inputs, attribute['type'], attribute['name']) 
-    for parameterName in data['parameters'].keys():
-        addSocket(node_group.inputs, data['parameters'][parameterName]['type'], parameterName)
+            socket = addSocket(node_group.inputs, attribute['type'], attribute['name']) 
+            data_type = attribute['default_value']['case']
+            socket.default_value = attribute['default_value'][data_type]
+    for parameter in data['parameters']:
+        socket = addSocket(node_group.inputs, parameter['type'], parameter['name'])
+        data_type = parameter['default_value']['case']
+        socket.default_value = parameter['default_value'][data_type]
 
     
     handledTypes = ['group', 'math', 'blender', 'openmfx', 'mesh_primitive',  'save_named_attribute']

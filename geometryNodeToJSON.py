@@ -184,7 +184,7 @@ def exportToJSON(geomGraph):
     dictionary = {}
     dictionary['name'] = graphName
     dictionary['inputs'] = []
-    dictionary['parameters'] = {}
+    dictionary['parameters'] =  []
     dictionary['nodes'] = []
 
     dictionary['nodes'].append({'name' :'OutputNode', 'type': 'output', 'inputs': {}, 'settings': [], 'constants': []})
@@ -217,10 +217,11 @@ def exportToJSON(geomGraph):
         elif input.display_shape == 'CIRCLE':
             inputMap[i] = parameterSocketIndex
             parameterSocketIndex += 1
-            dictionary['parameters'][input.name] = {
+            dictionary['parameters'].append({
+                'name': input.name,
                 'type': input.type, #TODO: use standarized types instead of blender specific ones
                 'default_value': getDefaultValue(input)
-            }
+            })
         else:
             inputMap[i] = inputSocketIndex
             inputSocketIndex += 1
