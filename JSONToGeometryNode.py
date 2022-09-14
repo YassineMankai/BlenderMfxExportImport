@@ -107,18 +107,18 @@ def importGraphDescitptionFromJSON(graphName = 'test1'):
         nodeName = nodeData['name']
         for input in nodeData['inputs']:
             for connection in input['connections']:  
-                sourceSocketIndex = getSocketIndexFromComposedKey(connection['to'])
+                sourceSocketIndex = getSocketIndexFromComposedKey(connection['from'])
                 sourceNodeName = input['sourceNodeName']
                 sourceNodeOutputCount = len(geomNodesGraph[sourceNodeName].outputs)
                 if sourceNodeName == 'InputNode':
                     sourceNodeOutputCount -= 1
                 
-                targetSocket = geomNodesGraph['OutputNode'].inputs[-1] if nodeData['type'] == 'output' else geomNodesGraph[nodeName].inputs[getSocketIndexFromComposedKey(connection['from'])]
+                targetSocket = geomNodesGraph['OutputNode'].inputs[-1] if nodeData['type'] == 'output' else geomNodesGraph[nodeName].inputs[getSocketIndexFromComposedKey(connection['to'])]
                 sourceSocket = None
                 if sourceSocketIndex >= sourceNodeOutputCount: # is multiplexed attribute -> need inputNode
                     multiplexerKey = (sourceNodeName, sourceSocketIndex) 
                     if not inputNodesForMultiplexers.get(multiplexerKey):
-                        attributeData = {'attributeName' : getSocketNameFromComposedKey(connection['to']), 'type': targetSocket.type}
+                        attributeData = {'attributeName' : getSocketNameFromComposedKey(connection['from']), 'type': targetSocket.type}
                         inputNodesForMultiplexers[multiplexerKey] = addNewInputNode(nodes, attributeData)
                     inputFieldOutputIndex = 0 if inputNodesForMultiplexers[multiplexerKey].type != 'INPUT_ATTRIBUTE' else ['FLOAT_VECTOR', 'FLOAT', 'FLOAT_COLOR', 'BOOLEAN', 'INT'].index(inputNodesForMultiplexers[multiplexerKey].data_type)
                     sourceSocket = inputNodesForMultiplexers[multiplexerKey].outputs[inputFieldOutputIndex]

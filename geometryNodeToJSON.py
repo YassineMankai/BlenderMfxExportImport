@@ -117,10 +117,10 @@ def addConnection(inputData, link, inputMap):
 
     for key in list(inputData.keys()):
         if inputData[key]['sourceNodeName'] == currentSourceData['sourceNodeName'] and inputData[key]['socketIndex'] == currentSourceData['socketIndex']:
-            inputData[key]['connections'].append({'from' : targetKey, 'to' : sourceKey})
+            inputData[key]['connections'].append({'from' : sourceKey, 'to' : targetKey})
             return
     inputData['attributeExtraGeometry_' + targetSocketIndex] = currentSourceData
-    inputData['attributeExtraGeometry_' + targetSocketIndex]['connections'].append({'from' : targetKey, 'to' : sourceKey})
+    inputData['attributeExtraGeometry_' + targetSocketIndex]['connections'].append({'from' : sourceKey, 'to' : targetKey})
 
 def exportLinks(nodes, dictionary, inputMap):
     nodeList = dictionary['nodes']

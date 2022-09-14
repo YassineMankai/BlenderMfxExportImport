@@ -73,8 +73,8 @@
                     "socketIndex": 3,
                     "connections": [
                         {
-                            "from": "Geometry (0)",
-                            "to": "Geometry (3)"
+                            "from": "Geometry (3)",
+                            "to": "Geometry (0)"
                         }
                     ]
                 },
@@ -84,8 +84,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "Value (2)",
-                            "to": "Vector (0)"
+                            "from": "Vector (0)",
+                            "to": "Value (2)"
                         }
                     ]
                 }
@@ -135,8 +135,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "Geometry (0)"
+                            "from": "Geometry (0)",
+                            "to": "OfxMeshMainInput (0)"
                         }
                     ]
                 },
@@ -146,8 +146,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "OfxMeshSecondaryInput1 (1)",
-                            "to": "OfxMeshMainOutput (0)"
+                            "from": "OfxMeshMainOutput (0)",
+                            "to": "OfxMeshSecondaryInput1 (1)"
                         }
                     ]
                 },
@@ -157,8 +157,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "pointWeightA (2)",
-                            "to": "Vector (0)"
+                            "from": "Vector (0)",
+                            "to": "pointWeightA (2)"
                         }
                     ]
                 }
@@ -185,16 +185,16 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "OfxMeshMainOutput (0)"
+                            "from": "OfxMeshMainOutput (0)",
+                            "to": "OfxMeshMainInput (0)"
                         },
                         {
                             "from": "position (1)",
                             "to": "position (1)"
                         },
                         {
-                            "from": "offset (2)",
-                            "to": "Attrb1 (2)"
+                            "from": "Attrb1 (2)",
+                            "to": "offset (2)"
                         }
                     ]
                 }
@@ -221,8 +221,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "Geometry (0)"
+                            "from": "Geometry (0)",
+                            "to": "OfxMeshMainInput (0)"
                         }
                     ]
                 }
@@ -272,8 +272,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "OfxMeshMainInput (0)",
-                            "to": "OfxMeshMainOutput (0)"
+                            "from": "OfxMeshMainOutput (0)",
+                            "to": "OfxMeshMainInput (0)"
                         }
                     ]
                 }
@@ -361,8 +361,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "Vector (0)",
-                            "to": "Group (1)"
+                            "from": "Group (1)",
+                            "to": "Vector (0)"
                         }
                     ]
                 }
@@ -411,8 +411,8 @@
                     "socketIndex": 3,
                     "connections": [
                         {
-                            "from": "Vector (0)",
-                            "to": "normal (4)"
+                            "from": "normal (4)",
+                            "to": "Vector (0)"
                         }
                     ]
                 },
@@ -422,8 +422,8 @@
                     "socketIndex": 0,
                     "connections": [
                         {
-                            "from": "Scale (3)",
-                            "to": "BaseCubeSIzeScaleOffset (1)"
+                            "from": "BaseCubeSIzeScaleOffset (1)",
+                            "to": "Scale (3)"
                         }
                     ]
                 }
