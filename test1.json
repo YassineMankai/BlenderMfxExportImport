@@ -126,13 +126,16 @@
             ]
         },
         {
-            "name": "OpenMfx Plugin.003",
+            "name": "OpenMfx Instancing",
             "type": "openmfx",
             "inputs": [
                 {
                     "inputID": "OfxMeshMainInput",
-                    "sourceNodeName": "Store Named Attribute",
-                    "socketIndex": 0,
+                    "sourceGeometry":
+                    {
+                        "sourceNodeName": "CubeNode",
+                        "sourceSocketIndex": 0
+                    },
                     "connections": [
                         {
                             "from": "Geometry (0)",
@@ -142,8 +145,11 @@
                 },
                 {
                     "inputID": "OfxMeshSecondaryInput1",
-                    "sourceNodeName": "OpenMfx Plugin.001",
-                    "socketIndex": 0,
+                    "sourceGeometry":
+                    {
+                        "sourceNodeName": "BaseGeometryNode",
+                        "sourceSocketIndex": 0
+                    },
                     "connections": [
                         {
                             "from": "OfxMeshMainOutput (0)",
@@ -202,7 +208,7 @@
             "settings": [
                 {
                     "property": "plugin",
-                    "value": "mfx_modifiers.ofx"
+                    "value": "mfx_utilities.ofx"
                 },
                 {
                     "property": "effect",
